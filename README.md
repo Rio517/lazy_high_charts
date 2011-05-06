@@ -5,6 +5,9 @@ LazyHighCharts is Rails 2.x/3.x Gem for displaying Highcharts graphs.
 Compatibility:
 lazy_high_charts 1.x is compatible with Rails 2.x/3.x
 
+This version:
+I created this to allow me to pass the original gem's JS to the footer and allow me to specify the jQuery I'm using for noconflict js
+
 Usage
 =======
  About javascript Assets notes:
@@ -22,7 +25,7 @@ Usage
  In your Gemfile, add this line:
 	gem 'lazy_high_charts'
 
- Usage in Controller:
+ ### Usage in Controller:
   
      @h = LazyHighCharts::HighChart.new('graph') do |f|
         f.series(:name=>'John', :data=>[3, 20, 3, 5, 4, 10, 12 ,3, 5,6,7,7,80,9,9])
@@ -49,15 +52,19 @@ Usage
        .....
 
 
-  Usage in layout:
+  ### Usage in layout:
+
+  In this version, you also need to provide a place to yield footer - this way all JS is loaded after the body.
       
-  <%= javascript_include_tag :high_charts %>
-      
-  Usage in view:
+    <%= javascript_include_tag :high_charts %>
+    <%= yield(:footer) %> 
   
-    <%= high_chart("my_id", @h, 'jQuery') %>
+      
+  ### Usage in view:
 
   The 'jQuery' references what jquery you're using in case of conflicts.
+  
+    <%= high_chart("my_id", @h, 'jQuery') %> 
 
   Passing formatting options in the view to the helper block , because all the helper options declared in the controller are converted in strict/valid json (quoted key);  so we need to extend the json object with some js.
   
@@ -69,7 +76,7 @@ Usage
       
 
 
-  Option reference:
+  ### Option reference:
 
      http://www.highcharts.com/ref/
 

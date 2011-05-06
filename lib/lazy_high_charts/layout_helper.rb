@@ -8,7 +8,8 @@ module LazyHighCharts
       if object
         object.html_options.merge!({:id=>placeholder})
         object.options[:chart][:renderTo] = placeholder
-        high_graph(placeholder, object, jquery, &block).concat(content_tag("div","", object.html_options))
+        content_for(:footer, high_graph(placeholder, object, jquery, &block))
+        content_tag("div","", object.html_options)
       end
     end
 
