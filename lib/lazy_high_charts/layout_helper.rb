@@ -4,19 +4,19 @@ require 'rails' unless defined? ::Rails
 module LazyHighCharts
   module LayoutHelper
 
-    def high_chart(placeholder, object, &block)
+    def high_chart(placeholder, object, jquery='jQuery', &block)
       if object
         object.html_options.merge!({:id=>placeholder})
         object.options[:chart][:renderTo] = placeholder
-        high_graph(placeholder,object , &block).concat(content_tag("div","", object.html_options))
+        high_graph(placeholder, object, jquery, &block).concat(content_tag("div","", object.html_options))
       end
     end
 
 
-  def high_graph(placeholder, object, &block)
+  def high_graph(placeholder, object, jquery, &block)
     graph =<<-EOJS
     <script type="text/javascript">
-    jQuery(function() {
+    #{jquery}(function() {
           // 1. Define JSON options
           var options = {
                         chart: #{object.options[:chart].to_json},
