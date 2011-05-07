@@ -6,7 +6,10 @@ Compatibility:
 lazy_high_charts 1.x is compatible with Rails 2.x/3.x
 
 This version:
-I created this to allow me to pass the original gem's JS to the footer and allow me to specify the jQuery I'm using for noconflict js
+I created this to allow me to:
+*pass the original gem's JS to the footer 
+*allow me to specify the jQuery I'm using for noconflict js
+*pass in a js date object
 
 Usage
 =======
@@ -52,7 +55,8 @@ Usage
        .....
 
 
-  ### Usage in layout:
+  Usage in layout:
+  -------
 
   In this version, you also need to provide a place to yield footer - this way all JS is loaded after the body.
       
@@ -60,7 +64,8 @@ Usage
     <%= yield(:footer) %> 
   
       
-  ### Usage in view:
+  Usage in view:
+  -------
 
   The 'jQuery' references what jquery you're using in case of conflicts.
   
@@ -74,9 +79,20 @@ Usage
          	<%= "options.yAxis.labels.formatter = function() { return 'hey';}" %>
        <%end %> 
       
+  ### Time series
 
+  Pass in your options as so:
 
-  ### Option reference:
+  @objects = LazyHighCharts::HighChart.new('graph') do |f|
+        f.series({
+          :name=>'Objects Per Day',
+          :data => series_data,
+          :pointInterval => 24 * 3600 * 1000, #1 day,
+          :pointStart  => start.strftime("%Y, %-m-1, %d") #js date object's month starts at 0, so we minus one when pushing to JS
+        })
+
+  Option reference:
+  -------
 
      http://www.highcharts.com/ref/
 

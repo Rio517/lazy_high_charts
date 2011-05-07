@@ -15,6 +15,11 @@ module LazyHighCharts
 
 
   def high_graph(placeholder, object, jquery, &block)
+    #Hacking in a way to pass a js date object to high_charts
+    point_start = object.data.first[:pointStart]
+    point_start = point_start.nil? ? '' : ",\"pointStart\": Date.UTC(#{point_start.to_s}) "
+    object.data.first.reject{|k,v| k = :pointStart}
+    
     graph =<<-EOJS
     <script type="text/javascript">
     #{jquery}(function() {
@@ -28,7 +33,7 @@ module LazyHighCharts
                                 tooltip:  #{object.options[:tooltip].to_json},
                                 credits: #{object.options[:credits].to_json},
                                 plotOptions: #{object.options[:plotOptions].to_json},
-                                series: #{object.data.to_json},
+                                series: #{object.data.to_json.insert(-3, point_start)},
                                 subtitle: #{object.options[:subtitle].to_json}
                         };
 
