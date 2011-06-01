@@ -23,7 +23,6 @@ module LazyHighCharts
     graph =<<-EOJS
     <script type="text/javascript">
     #{jquery}(function() {
-          // 1. Define JSON options
           var options = {
                         chart: #{object.options[:chart].to_json},
                                 title: #{object.options[:title].to_json},
@@ -35,11 +34,11 @@ module LazyHighCharts
                                 plotOptions: #{object.options[:plotOptions].to_json},
                                 series: #{object.data.to_json.insert(-3, point_start)},
                                 subtitle: #{object.options[:subtitle].to_json}
+                        #{(', ' + object.options[:parent].to_json[1..-2]) if object.options[:parent]}
                         };
 
           // 2. Add callbacks (non-JSON compliant)
           #{capture(&block) if block_given?}
-          // 3. Build the chart
           var chart = new Highcharts.Chart(options);
       });
       </script>
